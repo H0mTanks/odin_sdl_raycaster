@@ -2,6 +2,7 @@ package Entities
 
 import "../Draw"
 import "../Globals"
+import "../Map"
 import "core:math"
 
 Player :: struct {
@@ -24,8 +25,13 @@ update_player :: proc(delta_time : f64) {
     player.rotation_angle += cast(f32)player.turn_direction * player.rotation_speed * cast(f32)delta_time
     move_step : f32 = cast(f32)player.walk_direction * player.move_speed * cast(f32)delta_time
 
-    player.x += math.cos_f32(player.rotation_angle) * move_step
-    player.y += math.sin_f32(player.rotation_angle) * move_step
+    new_x : f32 = player.x + math.cos_f32(player.rotation_angle) * move_step
+    new_y : f32 = player.y + math.sin_f32(player.rotation_angle) * move_step
+
+    if !Map.is_a_wall(new_x, new_y) {
+        player.x = new_x
+        player.y = new_y
+    }
 }
 
 render_player :: proc() {

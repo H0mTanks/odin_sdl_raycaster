@@ -36,6 +36,13 @@ allocate_grid :: proc(x : i32, y: i32) {
     }
 }
 
+is_a_wall :: proc(tileX : f32, tileY : f32) -> bool {
+    x : i32 = cast(i32)(tileX / cast(f32)Globals.TILE_SIZE)
+    y : i32 = cast(i32)(tileY / cast(f32)Globals.TILE_SIZE)
+
+    return minimap.grid[minimap.grid_cols * y + x] != 0
+}
+
 render_grid_stroke :: proc() {
     for y : i32 = 0; y < minimap.grid_rows; y += 1 {
         for x : i32 = 0; x < minimap.grid_cols; x += 1 {
