@@ -65,6 +65,9 @@ main :: proc() {
     Entities.player.rotation_speed = 60.0 * (math.PI / 180)
     Entities.player.color = 0xFFA454D6
 
+    //* setup the rays
+    Entities.allocate_rays()
+
     for Globals.is_running {
         process_input()
         update()
@@ -122,6 +125,7 @@ update :: proc() {
     old_frame_time = cast(f64)SDL.GetTicks()
 
     Entities.update_player(delta_time)
+    Entities.cast_all_rays()
 }
 
 render :: proc() {
@@ -129,6 +133,7 @@ render :: proc() {
     Map.render_grid()
     Map.render_grid_stroke()
     Entities.render_player()
+    Entities.render_all_rays()
     //Draw.line(100, 100, 400, 400, 0xFFFFFFFF)
     //grid();
     //Draw.rectangle(32, 32, 32, 32, 0xFFFFFFFF)
