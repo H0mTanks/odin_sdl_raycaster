@@ -35,7 +35,9 @@ update_player :: proc(delta_time : f64) {
 }
 
 render_player :: proc() {
-    Draw.filled_circle(cast(i32)player.x, cast(i32)player.y, player.radius, player.color)
+    Draw.filled_circle(cast(i32)(Globals.MINIMAP_SCALE_FACTOR * player.x), 
+                       cast(i32)(Globals.MINIMAP_SCALE_FACTOR * player.y), 
+                       cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)player.radius), player.color)
     // Draw.line(cast(i32)player.x, cast(i32)player.y, 
     //         cast(i32)(player.x + math.cos_f32(player.rotation_angle) * 100), 
     //         cast(i32)(player.y + math.sin_f32(player.rotation_angle) * 100),

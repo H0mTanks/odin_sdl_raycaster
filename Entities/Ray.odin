@@ -4,6 +4,7 @@ import "../Globals"
 import "../Draw"
 import "../Map"
 import "core:math"
+import "core:fmt"
 
 //TODO: Test with an SOA struct
 //TODO: See which fields of ray struct can just be local variables
@@ -28,16 +29,50 @@ allocate_rays :: proc() {
 }
 
 render_ray :: proc(ray : ^Ray) {
-    Draw.line(cast(i32)player.x, cast(i32)player.y, 
-            cast(i32)(ray.wall_hit_x),
-            cast(i32)(ray.wall_hit_y),
-            0xFFFCB900)
+    Draw.line(cast(i32)(Globals.MINIMAP_SCALE_FACTOR * player.x), 
+              cast(i32)(Globals.MINIMAP_SCALE_FACTOR * player.y), 
+              cast(i32)(Globals.MINIMAP_SCALE_FACTOR * ray.wall_hit_x),
+              cast(i32)(Globals.MINIMAP_SCALE_FACTOR * ray.wall_hit_y),
+              0xFFFCB900)
 }
 
 //? SIMD this
 render_all_rays :: proc() {
     for _, i in rays {
         render_ray(&rays[i])
+    }
+}
+
+render_projection_3D :: proc() {
+    for ray, i in rays {
+        perp_distance : f32 = ray.distance * math.cos(ray.ray_angle - player.rotation_angle);
+        distance_proj_plane : f32 = (cast(f32)Globals.WINDOW_WIDTH / 2) / math.tan(Globals.FOV_ANGLE / 2);
+        projected_wall_height : f32 = (cast(f32)Globals.TILE_SIZE / perp_distance) * distance_proj_plane
+
+        wall_strip_height : i32 = cast(i32)projected_wall_height
+
+        wall_top_pixel : i32 = (Globals.WINDOW_HEIGHT / 2) - (wall_strip_height / 2)
+        wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel
+
+        wall_bottom_pixel : i32 = (Globals.WINDOW_HEIGHT / 2) + (wall_strip_height / 2)
+        wall_bottom_pixel = wall_bottom_pixel > Globals.WINDOW_HEIGHT ? Globals.WINDOW_HEIGHT : wall_bottom_pixel
+
+        color_factor : f32 = math.remainder(ray.distance, cast(f32)Globals.TILE_SIZE * 16) / cast(f32)(Globals.TILE_SIZE * 16)
+        //fmt.println(color_factor)
+
+        //*color of the ceiling
+        for y : i32 = 0; y < wall_top_pixel; y += 1 {
+            Draw.pixel(cast(i32)i, y, /*Draw.factor_color(*/0xFF333333/*, color_factor)*/)
+        }
+
+        //*render the wall in the middle
+        for y : i32 = wall_top_pixel; y < wall_bottom_pixel; y += 1 {
+            Draw.pixel(cast(i32)i, y, (ray.was_hit_vertical ? Draw.factor_color(0xFFEEEEEE, color_factor) : Draw.factor_color(0xFFCCCCCC, color_factor)))
+        }   
+
+        for y : i32 = wall_bottom_pixel; y < Globals.WINDOW_HEIGHT; y += 1 {
+            Draw.pixel(cast(i32)i, y, /*Draw.factor_color(*/0xFF777777, /*Draw.factor_color(*/)
+        }
     }
 }
 

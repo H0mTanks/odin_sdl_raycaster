@@ -2,6 +2,24 @@ package Draw
 
 import "../Globals"
 
+factor_color :: proc(color : u32, factor : f32) -> u32 {
+	red : u8 = cast(u8)(color >> 16)
+	green : u8 = cast(u8)(color >> 8)
+	blue : u8 = cast(u8)(color)
+
+	lred : f32 = cast(f32)red * factor
+	lgreen : f32 = cast(f32)green * factor
+	lblue : f32 = cast(f32)blue * factor
+
+	red = 0xFF - cast(u8)lred
+	green = 0xFF - cast(u8)lgreen
+	blue = 0xFF - cast(u8)lblue
+
+	fcolor : u32 = 0xFF000000 | (cast(u32)red << 16) | (cast(u32)green << 8) | (cast(u32)blue)
+
+	return fcolor
+}
+
 pixel :: proc(x : i32, y : i32, color : u32) {
     if x < Globals.WINDOW_WIDTH && y < Globals.WINDOW_HEIGHT && x >= 0 && y >= 0 {
 		Globals.app.display_buffer[Globals.WINDOW_WIDTH * y + x] = color;

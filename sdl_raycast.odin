@@ -61,8 +61,8 @@ main :: proc() {
     Entities.player.turn_direction = 0 
     Entities.player.walk_direction = 0
     Entities.player.rotation_angle = math.PI / 2
-    Entities.player.move_speed = 100.0
-    Entities.player.rotation_speed = 60.0 * (math.PI / 180)
+    Entities.player.move_speed = 200.0
+    Entities.player.rotation_speed = 120.0 * (math.PI / 180)
     Entities.player.color = 0xFFA454D6
 
     //* setup the rays
@@ -130,6 +130,8 @@ update :: proc() {
 
 render :: proc() {
     //* Update DisplayBuffer here
+    Entities.render_projection_3D()
+
     Map.render_grid()
     Map.render_grid_stroke()
     Entities.render_player()

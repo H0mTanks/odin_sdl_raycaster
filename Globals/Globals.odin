@@ -5,9 +5,10 @@ import "core:math"
 
 is_running : bool = false
 
-TILE_SIZE : i32 : 32
+TILE_SIZE : i32 : 64
 MAP_NUM_ROWS : i32 : 11
 MAP_NUM_COLS : i32 : 15
+MINIMAP_SCALE_FACTOR : f32 : 0.25
 
 WINDOW_WIDTH : i32 = MAP_NUM_COLS * TILE_SIZE
 WINDOW_HEIGHT : i32 = MAP_NUM_ROWS * TILE_SIZE

@@ -52,7 +52,10 @@ render_grid_stroke :: proc() {
 
             tile_color : u32 = 0xFF999999
 
-            Draw.rectangle(tileX, tileY, Globals.TILE_SIZE, Globals.TILE_SIZE, tile_color)
+            Draw.rectangle(cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)(tileX)), 
+                                  cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)(tileY)), 
+                                  cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)(Globals.TILE_SIZE)), 
+                                  cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)(Globals.TILE_SIZE)), tile_color)
         }
     }
 }
@@ -74,7 +77,10 @@ render_grid :: proc() {
                 tile_color = 0xFF202020
             }
 
-            Draw.filled_rectangle(tileX, tileY, Globals.TILE_SIZE, Globals.TILE_SIZE, tile_color)
+            Draw.filled_rectangle(cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)(tileX)), 
+                                  cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)(tileY)), 
+                                  cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)(Globals.TILE_SIZE)), 
+                                  cast(i32)(Globals.MINIMAP_SCALE_FACTOR * cast(f32)(Globals.TILE_SIZE)), tile_color)
         }
     }
 }
