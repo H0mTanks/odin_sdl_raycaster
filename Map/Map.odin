@@ -40,6 +40,10 @@ is_a_wall :: proc(tileX : f32, tileY : f32) -> bool {
     x : i32 = cast(i32)(tileX / cast(f32)Globals.TILE_SIZE)
     y : i32 = cast(i32)(tileY / cast(f32)Globals.TILE_SIZE)
 
+    if y > Globals.MAP_NUM_ROWS || x > Globals.MAP_NUM_COLS {
+        return true
+    }
+
     return minimap.grid[minimap.grid_cols * y + x] != 0
 }
 

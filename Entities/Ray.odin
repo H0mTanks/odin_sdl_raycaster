@@ -58,6 +58,8 @@ render_projection_3D :: proc() {
         wall_bottom_pixel = wall_bottom_pixel > Globals.WINDOW_HEIGHT ? Globals.WINDOW_HEIGHT : wall_bottom_pixel
 
         color_factor : f32 = math.remainder(ray.distance, cast(f32)Globals.TILE_SIZE * 16) / cast(f32)(Globals.TILE_SIZE * 16)
+        color_factor = color_factor < 0 ? 0.5 : color_factor
+        color_factor *= 1.5
         //fmt.println(color_factor)
 
         //*color of the ceiling
