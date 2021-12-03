@@ -3,6 +3,7 @@ package Entities
 import "../Globals"
 import "../Draw"
 import "../Map"
+import "../Textures"
 import "core:math"
 import "core:fmt"
 
@@ -62,16 +63,31 @@ render_projection_3D :: proc() {
         color_factor *= 1.5
         //fmt.println(color_factor)
 
-        //*color of the ceiling
+        //*render the ceiling
         for y : i32 = 0; y < wall_top_pixel; y += 1 {
             Draw.pixel(cast(i32)i, y, /*Draw.factor_color(*/0xFF333333/*, color_factor)*/)
         }
 
+        texture_offset_x : i32 = ---
+        if (ray.was_hit_vertical) {
+            texture_offset_x = cast(i32)ray.wall_hit_y % Globals.TEXTURE_HEIGHT
+        }
+        else {
+            texture_offset_x = cast(i32)ray.wall_hit_x % Globals.TEXTURE_WIDTH
+        }
+
         //*render the wall in the middle
         for y : i32 = wall_top_pixel; y < wall_bottom_pixel; y += 1 {
-            Draw.pixel(cast(i32)i, y, (ray.was_hit_vertical ? Draw.factor_color(0xFFEEEEEE, color_factor) : Draw.factor_color(0xFFCCCCCC, color_factor)))
+            distance_from_top : i32 = y + (wall_strip_height / 2) - (Globals.WINDOW_HEIGHT / 2)
+            texture_offset_y : i32 = cast(i32)(cast(f32)distance_from_top * (cast(f32)Globals.TEXTURE_HEIGHT / cast(f32)wall_strip_height))
+
+            texel_color : u32 = Textures.wall_texture[(Globals.TEXTURE_WIDTH * texture_offset_y) + texture_offset_x]
+            Draw.pixel(cast(i32)i, y, texel_color)
+            //Draw.pixel(cast(i32)i, y, (ray.was_hit_vertical ? Draw.factor_color(0xFFEEEEEE, color_factor) : Draw.factor_color(0xFFCCCCCC, color_factor)))
+            //Draw.pixel(cast(i32)i, y, (ray.was_hit_vertical ? 0x55EEEEEE : 0xFFCCCCCC))
         }   
 
+        //* render the floor
         for y : i32 = wall_bottom_pixel; y < Globals.WINDOW_HEIGHT; y += 1 {
             Draw.pixel(cast(i32)i, y, /*Draw.factor_color(*/0xFF777777, /*Draw.factor_color(*/)
         }

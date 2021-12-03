@@ -22,7 +22,7 @@ factor_color :: proc(color : u32, factor : f32) -> u32 {
 
 pixel :: proc(x : i32, y : i32, color : u32) {
     if x < Globals.WINDOW_WIDTH && y < Globals.WINDOW_HEIGHT && x >= 0 && y >= 0 {
-		Globals.app.display_buffer[Globals.WINDOW_WIDTH * y + x] = color;
+		Globals.app.display_buffer[(Globals.WINDOW_WIDTH * y) + x] = color;
 	}
 }
 

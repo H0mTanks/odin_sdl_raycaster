@@ -18,6 +18,10 @@ FOV_ANGLE : f32 : 60 * (math.PI / 180)
 WALL_STRIP_WIDTH : i32 : 1
 NUM_RAYS : i32 = WINDOW_WIDTH / WALL_STRIP_WIDTH
 
+TEXTURE_WIDTH : i32 : TILE_SIZE //?64
+TEXTURE_HEIGHT : i32 : TILE_SIZE //?64
+NUM_TEXTURES : i32 : 8
+
 App :: struct {
     window : ^SDL.Window,
     renderer : ^SDL.Renderer,

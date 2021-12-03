@@ -9,6 +9,7 @@ import "Globals"
 import "Map"
 import "Draw"
 import "Entities"
+import "Textures"
 
 delta_time : f64 = 0.0
 old_frame_time : f64 = 0.0
@@ -63,6 +64,8 @@ main :: proc() {
     }
     defer SDL.DestroyRenderer(Globals.app.renderer)
 
+    SDL.SetRenderDrawBlendMode(Globals.app.renderer, SDL.BlendMode.BLEND)
+
     Globals.app.display_buffer = make([]u32, Globals.WINDOW_WIDTH * Globals.WINDOW_HEIGHT)
     if Globals.app.display_buffer == nil {
        fmt.eprintln("Could not allocate buffer");
@@ -73,6 +76,7 @@ main :: proc() {
                                                           cast(u32)(SDL.PixelFormatEnum.RGBA32),
                                                          .STREAMING, Globals.WINDOW_WIDTH, Globals.WINDOW_HEIGHT)
 
+    Textures.init_wall_texture()
     
     TTF.Init()
     font = TTF.OpenFont("verdana.ttf", 18)
